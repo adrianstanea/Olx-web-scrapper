@@ -5,6 +5,10 @@ import re
 
 import validator_collection.validators as validators
 
+# configuration settings from .ini file
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 
 def retrieve_web_page(URL_path: str):
     """Summary:
@@ -71,8 +75,17 @@ def get_URL_from_keyboard() -> str:
 
 if __name__ == '__main__':
     # # 1) Scrieti un script care deschide un URL specificat de la tastatura si printeaza titlul paginii HTML si description meta
-    URL = get_URL_from_keyboard()
-    soup = retrieve_web_page(URL)
-    title, description = extract_data(soup)
-    print(title)
-    print(description)
+    # URL = get_URL_from_keyboard()
+    # soup = retrieve_web_page(URL)
+    # title, description = extract_data(soup)
+    # print(title)
+    # print(description)
+
+    # 2)    Get input from config file
+    try:
+        soup = retrieve_web_page(URL_path=config['DEFAULT']['URL'])
+        title, description = extract_data(soup)
+        print(title)
+        print(description)
+    except validators.errors.InvalidURLError:
+        print("Invalid URL provided, can't make request")
