@@ -15,6 +15,7 @@ pages = config['DEFAULT']['PAGES']
 
 olx_url = utilities.format_olx_query_url(url, keywords)
 
+
 if __name__ == '__main__':
     try:
         web_scrapper = WebScrapper(
@@ -37,9 +38,9 @@ if __name__ == '__main__':
         data = zip(prices, titles, links)
         data = sorted(data, key=lambda x: x[0])  # descending order by price
 
-        for price, title, link in data:
-            print(f'{price} {title} \t{ "olx.ro"+ link}')
-            print('---------------------------------')
+        if utilities.command_line_parsing():
+            utilities.save_to_file(data)
 
+        utilities.print_data(data)
     except validators.errors.InvalidURLError as e:
         print(e)
