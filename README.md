@@ -1,7 +1,5 @@
 # Web Scraping
 
-_The project is still work-in-progress_
-
 Install dependencies using:
 
 ```console
@@ -10,7 +8,18 @@ Install dependencies using:
 
 ## Current fuctionality
 
--  The user can provide an URL for a target web page changing the variable from the congig.ini file
--  The script App.js uses the URL and makes an HTTP GET request to the server using [requests library](https://pypi.org/project/requests/)
--  The response is then parsed into an object for easier acces to the data contained within the HTML using [Beautiful Soup ](https://beautiful-soup-4.readthedocs.io/en/latest/#installing-beautiful-soup)
--  Finally, after running some validations the title and description are extracted and presented to the user
+-  The user can run the application with the optional -log flag
+
+```console
+    python App.py -log
+```
+
+![](/images/Running_script.PNG)
+
+This will extract data from the desired URL and print the result to the console. When -log flag is active the search result is stored under the ./data folder
+
+![](/images/csv_data.PNG)
+
+-  If we find a product under the imposed price limit we notify the user by sending an email with the product data
+
+![](/images/email_results.jpg)
