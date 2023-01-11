@@ -2,6 +2,7 @@ import configparser
 import validator_collection.validators as validators
 
 from WebScrapper import WebScrapper
+from Email import notify_user
 import utilities
 
 # configuration settings from .ini file
@@ -13,11 +14,15 @@ keywords = config['DEFAULT']['KEYWORDS']
 pages = config['DEFAULT']['PAGES']
 
 
-olx_url = utilities.format_olx_query_url(url, keywords)
+# adresa de email unde se vor trimite datele
+email = config['DEFAULT']['email']
+prag_pret = config['DEFAULT']['prag_pret']
 
+olx_url = utilities.format_olx_query_url(url, keywords)
 
 if __name__ == '__main__':
     try:
+        # initial data extraction
         web_scrapper = WebScrapper(
             url=olx_url)
         soup = web_scrapper.scrape()
@@ -35,12 +40,21 @@ if __name__ == '__main__':
             titles.extend(new_titles)
             links.extend(new_links)
 
+        # ordering data by price
         data = zip(prices, titles, links)
         data = sorted(data, key=lambda x: x[0])  # descending order by price
 
+        # save date if flag is set
         if utilities.command_line_parsing():
             utilities.save_to_file(data)
 
+        # print data to console
         utilities.print_data(data)
+
+        # send email any usefull data was found
+        notify_user(data, prag_pret, email, subject=keywords)
+
     except validators.errors.InvalidURLError as e:
         print(e)
+    except:
+        print("Unhandled exception")

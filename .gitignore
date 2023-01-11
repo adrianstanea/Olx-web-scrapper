@@ -1,4 +1,6 @@
 testing/
+data/
+secret.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
